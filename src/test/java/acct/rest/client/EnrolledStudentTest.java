@@ -20,7 +20,7 @@ public class EnrolledStudentTest {
 		
 		
 		//Initialize the API client, for now you can you my username/password
-		WebApiClient<String> studentsApi = new AdmittedStudentsApiClient("tsegay", "Tsegay","http://data.acct2day.us/api/", "students");
+		WebApiClient<String> studentsApi = new AdmittedStudentsApiClient("username", "password","http://data.acct2day.us/api/", "students");
 		
 		
 		logger.info("post student");
