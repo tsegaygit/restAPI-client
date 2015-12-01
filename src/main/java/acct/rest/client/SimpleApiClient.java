@@ -63,7 +63,7 @@ public class SimpleApiClient extends AbstractApiClient<ClassSchedule> {
 	}
 
 	@Override
-	public List<ClassSchedule> httpPost(Serializable entity) {
+	public ClassSchedule httpPost(Serializable entity) {
 		//
 		throw new UnsupportedOperationException();
 	}

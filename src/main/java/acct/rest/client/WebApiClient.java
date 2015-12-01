@@ -22,7 +22,7 @@ public interface WebApiClient<T> {
 
 	public List<T> httpGet();
 
-	public List<T> httpPost(Serializable entity);
+	public T httpPost(Serializable entity);
 	
 	public void renewToken();
 	

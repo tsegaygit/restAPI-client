@@ -30,17 +30,14 @@ public abstract class AbstractApiClient<T> implements WebApiClient<T> {
 	private static String TOKEN_KEY = "WEB_API";
 	private CacheAccess<String, Response> cache = null;
 	private String username;
-	
+	private String password;
+	protected String url;
+	protected String function;
 	
 	public CacheAccess<String, Response> getCache() {
 		return cache;
 	}
-
-
-
-	private String password;
-	protected String url;
-	protected String function;
+	
 	public AbstractApiClient(String username, String password, String url, String function){
 		this.username= username;
 		this.password = password;

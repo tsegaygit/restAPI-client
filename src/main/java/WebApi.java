@@ -26,9 +26,9 @@ public class WebApi {
 		
 		System.out.println("post student");
 		
-		WebApiClient<String> studentsApi = new AdmittedStudentsApiClient("tsegay", "Tsegay","http://data.acct2day.us/api/", "students");
-		List<String> students = studentsApi.httpGet();
-		for(String student : students){
+		WebApiClient<AdmittedStudent> studentsApi = new AdmittedStudentsApiClient("tsegay", "Tsegay","http://data.acct2day.us/api/", "students");
+		List<AdmittedStudent> students = studentsApi.httpGet();
+		for(AdmittedStudent student : students){
 			System.out.println(student);
 		}
 	}	

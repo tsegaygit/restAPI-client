@@ -23,7 +23,7 @@ import acct.rest.model.AdmittedStudent;
 import acct.rest.model.ClassSchedule;
 import acct.rest.model.Response;
 
-public class AdmittedStudentsApiClient extends AbstractApiClient<String> {
+public class AdmittedStudentsApiClient extends AbstractApiClient<AdmittedStudent> {
 
 	public AdmittedStudentsApiClient(String username, String password,
 			String url, String function) {
@@ -32,18 +32,14 @@ public class AdmittedStudentsApiClient extends AbstractApiClient<String> {
 	}
 
 	@Override
-	public List<String> httpGet() {
-		List<String> students = new ArrayList<String>();
+	public List<AdmittedStudent> httpGet() {
+		List<AdmittedStudent> students = new ArrayList<AdmittedStudent>();
 
 		try (CloseableHttpClient httpClient = HttpClientBuilder.create()
 				.build()) {
 			String token = getToken();
-			HttpPost request = new HttpPost(this.url + this.function);
+			HttpGet request = new HttpGet(this.url + this.function);
 			
-			AdmittedStudent entity = new AdmittedStudent();
-			entity.setId(1);
-			request.setEntity(new StringEntity(new Gson().toJson(entity)));
-
 			request.addHeader("content-type", "application/json");
 			request.addHeader("Authorization", "bearer " + token);
 			HttpResponse response = httpClient.execute(request);
@@ -56,11 +52,11 @@ public class AdmittedStudentsApiClient extends AbstractApiClient<String> {
 			String json = EntityUtils.toString(response.getEntity(), "UTF-8");
 
 
-			String studentID = new Gson().fromJson(json,
-					new TypeToken<String>() {
+			students = new Gson().fromJson(json,
+					new TypeToken<List<AdmittedStudent>>() {
 					}.getType());
 			
-			students.add(studentID);
+			//students.add(studentID);
 	
 
 		} catch (URISyntaxException | IOException ex) {
@@ -71,8 +67,8 @@ public class AdmittedStudentsApiClient extends AbstractApiClient<String> {
 	}
 
 	@Override
-	public List<String> httpPost(Serializable entity) {
-		List<String> students = new ArrayList<String>();
+	public AdmittedStudent httpPost(Serializable entity) {
+		AdmittedStudent student = null;
 
 		try (CloseableHttpClient httpClient = HttpClientBuilder.create()
 				.build()) {
@@ -94,18 +90,17 @@ public class AdmittedStudentsApiClient extends AbstractApiClient<String> {
 			String json = EntityUtils.toString(response.getEntity(), "UTF-8");
 
 
-			String studentID = new Gson().fromJson(json,
-					new TypeToken<String>() {
+			 student = new Gson().fromJson(json,
+					new TypeToken<AdmittedStudent>() {
 					}.getType());
 			
-			students.add(studentID);
-	
+			
 
 		} catch (URISyntaxException | IOException ex) {
 			System.out.println("There was an error: " + ex.getCause());
 		}
 
-		return students;
+		return student;
 	}
 
 
