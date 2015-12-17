@@ -9,6 +9,7 @@ import org.apache.commons.jcs.access.CacheAccess;
 import org.apache.http.client.ClientProtocolException;
 
 import acct.rest.model.Response;
+import acct.rest.server.JsonResponse;
 
 public interface WebApiClient<T> {
 
@@ -22,7 +23,7 @@ public interface WebApiClient<T> {
 
 	public List<T> httpGet();
 
-	public T httpPost(Serializable entity);
+	public JsonResponse httpPost(Serializable entity);
 	
 	public void renewToken();
 	

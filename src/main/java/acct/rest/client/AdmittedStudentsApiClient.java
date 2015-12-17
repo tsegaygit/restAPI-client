@@ -22,9 +22,14 @@ import com.google.gson.reflect.TypeToken;
 import acct.rest.model.AdmittedStudent;
 import acct.rest.model.ClassSchedule;
 import acct.rest.model.Response;
+import acct.rest.server.JsonResponse;
+import acct.rest.server.ResponseModelState;
 
 public class AdmittedStudentsApiClient extends AbstractApiClient<AdmittedStudent> {
 
+	private int numberOfTrials=0;
+	private final int maxTrials=3;
+	
 	public AdmittedStudentsApiClient(String username, String password,
 			String url, String function) {
 		super(username, password, url, function);
@@ -67,8 +72,8 @@ public class AdmittedStudentsApiClient extends AbstractApiClient<AdmittedStudent
 	}
 
 	@Override
-	public AdmittedStudent httpPost(Serializable entity) {
-		AdmittedStudent student = null;
+	public JsonResponse httpPost(Serializable entity) {
+		JsonResponse student = new JsonResponse();;
 
 		try (CloseableHttpClient httpClient = HttpClientBuilder.create()
 				.build()) {
@@ -83,18 +88,29 @@ public class AdmittedStudentsApiClient extends AbstractApiClient<AdmittedStudent
 			HttpResponse response = httpClient.execute(request);
 
 			if (response.getStatusLine().getStatusCode() == 401) {
-				renewToken();
-				httpGet();
+				numberOfTrials++; //increment the number of trials by 1
+				renewToken(); //get a new token
+				if(this.numberOfTrials>maxTrials) //return null after three trials
+					return null;
+				httpPost(entity);
 			}
-
+			
 			String json = EntityUtils.toString(response.getEntity(), "UTF-8");
 
+			System.out.println(json);
+			student.setStatus(response.getStatusLine().getStatusCode());
+			student.setModel(response.getEntity());
 
-			 student = new Gson().fromJson(json,
-					new TypeToken<AdmittedStudent>() {
-					}.getType());
-			
-			
+			//ResponseModelState modelState = new Gson().fromJson(json, ResponseModelState.class);
+
+//			if(modelState!=null){
+//				student.setModel(modelState.getModelState());
+//			}
+//			 student = new Gson().fromJson(json,
+//					new TypeToken<AdmittedStudent>() {
+//					}.getType());
+//			
+//			
 
 		} catch (URISyntaxException | IOException ex) {
 			System.out.println("There was an error: " + ex.getCause());

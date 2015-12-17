@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import acct.rest.model.AdmittedStudent;
 import acct.rest.model.ClassSchedule;
+import acct.rest.server.JsonResponse;
 
 public class EnrolledStudentTest {
 
@@ -33,7 +34,7 @@ public class EnrolledStudentTest {
 		logger.info("connecting to "+" http://data.acct2day.us/api/students");
 		
 		//Initialize the API client, for now you can you my username/password
-		WebApiClient<AdmittedStudent> studentsApi = new AdmittedStudentsApiClient("tsegay", "Tsegay","http://data.acct2day.us/api/", "students");
+		AdmittedStudentsApiClient studentsApi = new AdmittedStudentsApiClient("tsegay", "Tsegay","http://data.acct2day.us/api/", "students");
 		
 		
 		logger.info("post student");
@@ -44,12 +45,24 @@ public class EnrolledStudentTest {
 		AdmittedStudent entity = new AdmittedStudent();
 		entity.setId(1);
 		
-		// Successful responses to this request returns a list/array of studentIDs in (XXX-XX-XXXX) format
-		List<AdmittedStudent> student = studentsApi.httpGet();
+		////////////////////////////////////// Sample code //////////////////////////////////////
 		
+		JsonResponse student = studentsApi.httpPost(entity);
+		
+		//check for status code to see if the request was successful
+		if(student.getStatus()==200){
+			//request succeed
+		}else if(student.getStatus()==400){
+			//request failed with validation errors
+			
+		}else if (student.getStatus()==401){
+			//unauthorized access, 
+		}
+		
+        //////////////////////////////////////Sample code //////////////////////////////////////
 		assertNotNull(student);
 		
-		logger.info("New student created : "+student.size());
+		logger.info("New student created : "+student.getStatus());
 		
 	}
 }

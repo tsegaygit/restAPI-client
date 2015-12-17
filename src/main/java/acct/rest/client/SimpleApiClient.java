@@ -16,6 +16,7 @@ import org.apache.http.util.EntityUtils;
 
 import acct.rest.model.ClassSchedule;
 import acct.rest.model.Response;
+import acct.rest.server.JsonResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -63,7 +64,7 @@ public class SimpleApiClient extends AbstractApiClient<ClassSchedule> {
 	}
 
 	@Override
-	public ClassSchedule httpPost(Serializable entity) {
+	public JsonResponse httpPost(Serializable entity) {
 		//
 		throw new UnsupportedOperationException();
 	}
